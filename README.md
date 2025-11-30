@@ -261,6 +261,8 @@ endmenu
 
 ## 3.2. source
 
+> 類似 c 裏的 include
+
 ```Kconfig
 source "select_example/Kconfig"
 ```
@@ -410,6 +412,14 @@ config BLUEZ_556
 	bool "BlueZ 5.56"
 	default n
 ```
+
+## 3.4. comment
+
+> 註解
+
+````Kconfig
+		comment "This is a comment"
+````
 
 # Appendix
 
