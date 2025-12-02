@@ -95,7 +95,6 @@ flowchart LR
 ```bash
 # 這邊使用 python menuconfig 安裝 kconfiglib
 $ pip install --upgrade kconfiglib
-$ vi Kconfig
 ```
 
 ```bash
@@ -107,6 +106,12 @@ function kconfig2config()
 ```
 
 ```bash
+# 這邊就可編輯第1個Kconfig
+$ vi Kconfig
+```
+
+```bash
+# 編輯完成，執行
 $ kconfig2config
 [(python -m menuconfig Kconfig)]
 Loaded configuration '.config'
