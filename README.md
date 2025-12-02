@@ -98,6 +98,27 @@ $ pip install --upgrade kconfiglib
 $ vi Kconfig
 ```
 
+```bash
+function kconfig2config()
+{
+	DO_COMMAND="(python -m menuconfig Kconfig)"
+	eval-it "$DO_COMMAND"
+}
+```
+
+```bash
+$ kconfig2config
+[(python -m menuconfig Kconfig)]
+Loaded configuration '.config'
+
+#如指令，也可
+$ python -m menuconfig Kconfig
+```
+
+## 2.2. 1st menuconfig
+
+![Kconfig01](./images/Kconfig01.jpg)
+
 ```Kconfig
 menu "Example Configuration"
 
@@ -117,26 +138,7 @@ config EXAMPLE_PARAMETER
 endmenu
 ```
 
-```bash
-function kconfig2config()
-{
-	DO_COMMAND="(python -m menuconfig Kconfig)"
-	eval-it "$DO_COMMAND"
-}
-```
-
-```bash
-$ kconfig2config
-[(python -m menuconfig Kconfig)]
-Loaded configuration '.config'
-
-#如指令，也可
-$ python -m menuconfig Kconfig
-```
-
-![Kconfig01](./images/Kconfig01.jpg)
-
-## 2.2. .config and .config.old
+## 2.3. .config and .config.old
 
 > 如果有進行修改，會自動進行備份 .config.old
 
@@ -146,7 +148,7 @@ $ ll .config*
 -rw-rw-r-- 1 lanka lanka 113  五  17 10:35 .config.old
 ```
 
-## 2.3. config.h
+## 2.4. config.h
 
 > 很不幸的就是 .config 不能直給 c 程式碼引用，需將之轉換成 .h
 
@@ -220,9 +222,7 @@ $ kconfig2h
 
 # 3. Examples
 
-## 3.1. Simple
-
-#### - menu, config, int and depends on
+## 3.1. menu, config, int and depends on
 ![Kconfig03-menu,_config,_int_and_depends_on](./images/Kconfig03-menu,_config,_int_and_depends_on.jpg)
 ```bash
 [*] Enable Example Feature
@@ -247,7 +247,7 @@ menu "Example Configuration"
 endmenu
 ```
 
-#### - simple type
+## 3.2. simple type
 
 > bool：y/n
 >
@@ -294,7 +294,7 @@ menu "Simple Type"
 endmenu
 ````
 
-## 3.2. source
+## 3.3. source
 
 > 類似 c 裏的 include
 
@@ -302,9 +302,9 @@ endmenu
 source "select_example/Kconfig"
 ```
 
-## 3.3. menu
+## 3.4. menu
 
-#### - main choice and sub choice 1
+### 3.4.1. main choice and sub choice 1
 
 > 此範例，當選擇 "S1"，就會有子項目 "S1_1" 和 "S1_2" 可選擇；如果選擇 "S2"，就會有子項目 "S2_1" 和 "S2_2" 可選擇。
 
@@ -352,7 +352,7 @@ menu "main choice and sub choice 1"
 endmenu
 ```
 
-#### - main choice and sub choice 2
+### 3.4.2. main choice and sub choice 2
 
 >此範例，跟前一範例相似，只是寫法不同。
 
@@ -397,7 +397,7 @@ menu "main choice and sub choice 2"
 endmenu
 ```
 
-#### - menuconfig and if
+### 3.4.3. menuconfig and if
 
 > 此範例，當選擇 "S5"，就會有子項目 "S5_1" 和 "S5_2" 可選擇。
 
@@ -426,9 +426,11 @@ menuconfig S5
 	endif
 ```
 
-#### - select
+### 3.4.4. select
 
 > 此範例，當選擇 "Enable Bluetooth"，就會自動選擇 "BlueZ 5.56"。
+
+![Kconfig03-select](./images/Kconfig03-select.png)
 
 ```bash
 [*] Enable Bluetooth
@@ -448,11 +450,20 @@ config BLUEZ_556
 	default n
 ```
 
-## 3.4. comment
+## 3.5. comment
 
 > 註解
 
+![Kconfig03-comment](./images/Kconfig03-comment.png)
+
 ````Kconfig
+	config EXAMPLE_PARAMETER
+		int "Example Parameter"
+		range 0 99
+		default 10
+		depends on EXAMPLE_FEATURE
+		help
+			This parameter controls some aspect of the example feature.
 		comment "This is a comment"
 ````
 
