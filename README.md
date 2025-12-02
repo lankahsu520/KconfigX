@@ -90,6 +90,8 @@ flowchart LR
 
 ## 2.1. python menuconfig
 
+> 首先需要先安裝工具
+
 ```bash
 # 這邊使用 python menuconfig 安裝 kconfiglib
 $ pip install --upgrade kconfiglib
@@ -127,11 +129,16 @@ function kconfig2config()
 $ kconfig2config
 [(python -m menuconfig Kconfig)]
 Loaded configuration '.config'
+
+#如指令，也可
+$ python -m menuconfig Kconfig
 ```
 
 ![Kconfig01](./images/Kconfig01.jpg)
 
 ## 2.2. .config and .config.old
+
+> 如果有進行修改，會自動進行備份 .config.old
 
 ```bash
 $ ll .config*
@@ -140,6 +147,8 @@ $ ll .config*
 ```
 
 ## 2.3. config.h
+
+> 很不幸的就是 .config 不能直給 c 程式碼引用，需將之轉換成 .h
 
 ```bash
 function config2h()
@@ -250,14 +259,40 @@ endmenu
 >
 > int：整數
 
+![Kconfig03-simple_type](./images/Kconfig03-simple_type.jpg)
+
 ```bash
 [ ] Enable EXAMPLE_BOOL
 [*] Enable EXAMPLE_TRISTATE
 (Hello World !) EXAMPLE_STRING - Please input string
 (0x01) EXAMPLE_HEX - Please input hex
 (10) EXAMPLE_INT - Please input integer
-
 ```
+
+````Kconfig
+menu "Simple Type"
+	config EXAMPLE_BOOL
+		bool "Enable EXAMPLE_BOOL"
+
+	config EXAMPLE_TRISTATE
+		tristate "Enable EXAMPLE_TRISTATE"
+		default m
+
+	config EXAMPLE_STRING
+		string "EXAMPLE_STRING - Please input string"
+		default "Hello World !"
+
+	config EXAMPLE_HEX
+		hex "EXAMPLE_HEX - Please input hex"
+		range 0x00 0x10
+		default 0x01
+
+	config EXAMPLE_INT
+		int "EXAMPLE_INT - Please input integer"
+		range 0 99
+		default 10
+endmenu
+````
 
 ## 3.2. source
 
